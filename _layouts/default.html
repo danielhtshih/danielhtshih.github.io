@@ -11,13 +11,13 @@
     <script src="https://cdnjs.cloudflare.com/ajax/libs/html5shiv/3.7.3/html5shiv.min.js"></script>
     <![endif]-->
   </head>
-  <body>
+  <body onload="filter('.resp', '0')">
     <div class="wrapper">
       <header>
         <h1><a href="{{ "/" | absolute_url }}">{{ site.title | default: site.github.repository_name }}</a></h1>
         
         {% if site.logo %}
-          <img src="{{site.logo | relative_url}}" alt="Logo" />
+          <img src="{{site.logo | relative_url}}" alt="Logo" onclick="filter('.resp', '0')"/>
         {% endif %}
 
         <p>{{ site.description | default: site.github.project_tagline }}</p>
@@ -38,10 +38,10 @@
         </ul>
         {% endif %}
 
-        <img src="/assets/img/iframe_32.jpg" class="icon" onclick="filter('resp-container', '32')">
-        <img src="/assets/img/iframe_31.jpg" class="icon" onclick="filter('resp-container', '31')">
-        <img src="/assets/img/iframe_30.jpg" class="icon" onclick="filter('resp-container', '30')">
-        <img src="/assets/img/iframe_29.jpg" class="icon" onclick="filter('resp-container', '29')">
+        <img src="/assets/img/iframe_32.jpg" class="icon" onclick="filter('.resp', '32')">
+        <img src="/assets/img/iframe_31.jpg" class="icon" onclick="filter('.resp', '31')">
+        <img src="/assets/img/iframe_30.jpg" class="icon" onclick="filter('.resp', '30')">
+        <img src="/assets/img/iframe_29.jpg" class="icon" onclick="filter('.resp', '29')">
         <script src="{{ "/assets/js/filter.js" }}"></script>
       </header>
       <section>

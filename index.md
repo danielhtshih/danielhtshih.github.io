@@ -43,3 +43,13 @@ layout: default
   </div>
 </div>
 <p></p>
+<div class="resp" id="28">
+  <div class="resp-view">
+  <iframe src="https://www.google.com/maps/embed?pb=!4v1569837750577!6m8!1m7!1sCAoSLEFGMVFpcFBNdzJUaEVzdUJQcFNlNTRwbTcybTFpZTExd1JCMFcwYWdoZzVR!2m2!1d25.0324055!2d121.57048669999999!3f14.89!4f0!5f0.7820865974627469" width="600" height="450" frameborder="0" style="border:0;" allowfullscreen=""></iframe>
+  </div>
+  <p></p>
+  <div class="resp-map">
+    <iframe src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3615.107582307899!2d121.56792331401522!3d25.030422844590962!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x3442abb1f5c400bb%3A0x292ab457e991b763!2z6LGh5bGx5YWs5ZyS!5e0!3m2!1szh-TW!2stw!4v1569837774169!5m2!1szh-TW!2stw" width="800" height="600" frameborder="0" style="border:0;" allowfullscreen=""></iframe>
+  </div>
+</div>
+<p></p>

@@ -16,3 +16,29 @@ function filter(className, id) {
     }
   });
 }
+
+function addInputs(max) {
+  // append "ALL" input image
+  var all = document.createElement("input");
+  all.setAttribute("type", "image");
+  all.setAttribute("src", "/assets/img/all.jpg");
+  all.setAttribute("class", "icon");
+  all.setAttribute("alt", "");
+  all.setAttribute("onclick", "filter('.resp', '0')");
+  document.getElementById("inputs").appendChild(all);
+
+  // append "iframe_*" input images
+  for (; max > 0; max--)
+  {
+    var input = document.createElement("input");
+    input.setAttribute("type", "image");
+    input.setAttribute("src", "/assets/img/iframe_" + max + ".jpg");
+    input.setAttribute("class", "icon");
+    input.setAttribute("alt", "");
+    input.setAttribute("onclick", "filter('.resp', '" + max + "')");
+    document.getElementById("inputs").appendChild(input);
+  }
+
+  // reset the filter (hide the maps)
+  filter(".resp", "0");
+}

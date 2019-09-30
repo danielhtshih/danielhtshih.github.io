@@ -10,8 +10,9 @@
     <!--[if lt IE 9]>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/html5shiv/3.7.3/html5shiv.min.js"></script>
     <![endif]-->
+    <script src="{{ "/assets/js/filter.js" }}"></script>
   </head>
-  <body onload="filter('.resp', '0')">
+  <body onload="addInputs(32)">
     <div class="wrapper">
       <header>
         <h1><a href="{{ "/" | absolute_url }}">{{ site.title | default: site.github.repository_name }}</a></h1>
@@ -38,12 +39,7 @@
         </ul>
         {% endif %}
 
-        <input type="image" src="/assets/img/all.jpg" class="icon" onclick="filter('.resp', '0')">
-        <input type="image" src="/assets/img/iframe_32.jpg" class="icon" onclick="filter('.resp', '32')">
-        <input type="image" src="/assets/img/iframe_31.jpg" class="icon" onclick="filter('.resp', '31')">
-        <input type="image" src="/assets/img/iframe_30.jpg" class="icon" onclick="filter('.resp', '30')">
-        <input type="image" src="/assets/img/iframe_29.jpg" class="icon" onclick="filter('.resp', '29')">
-        <script src="{{ "/assets/js/filter.js" }}"></script>
+        <div id="inputs"></div>
       </header>
       <section>
 

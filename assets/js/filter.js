@@ -26,6 +26,7 @@ function addInputs(max, min) {
   all.setAttribute("alt", "");
   all.setAttribute("onclick", "filter('.resp', '0')");
   document.getElementById("inputs").appendChild(all);
+  document.getElementById("inputs").appendChild(document.createTextNode("\n"));
 
   // append "iframe_*" input images
   for (; max >= min; max--)
@@ -37,6 +38,7 @@ function addInputs(max, min) {
     input.setAttribute("alt", "");
     input.setAttribute("onclick", "filter('.resp', '" + max + "')");
     document.getElementById("inputs").appendChild(input);
+    document.getElementById("inputs").appendChild(document.createTextNode("\n"));
   }
 
   // reset the filter (hide the maps)

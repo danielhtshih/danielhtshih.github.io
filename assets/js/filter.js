@@ -17,7 +17,7 @@ function filter(className, id) {
   });
 }
 
-function addInputs(max) {
+function addInputs(max, min) {
   // append "ALL" input image
   var all = document.createElement("input");
   all.setAttribute("type", "image");
@@ -28,7 +28,7 @@ function addInputs(max) {
   document.getElementById("inputs").appendChild(all);
 
   // append "iframe_*" input images
-  for (; max > 0; max--)
+  for (; max >= min; max--)
   {
     var input = document.createElement("input");
     input.setAttribute("type", "image");

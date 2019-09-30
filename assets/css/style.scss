@@ -33,6 +33,17 @@
   border: 0;
 }
 
+// resize the icon to be 1/4 of logo (~500px)
 .icon {
   max-width: 23.98%;
+}
+
+// override header position style (from fixed)
+header {
+  position: static;
+}
+
+// override footer position style (from fixed)
+footer {
+  position: static;
 }

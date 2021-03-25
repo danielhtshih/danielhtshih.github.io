@@ -28,6 +28,20 @@
 
         <p>{{ site.description | default: site.github.project_tagline }}</p>
 
+        <div id="inputs"></div>
+      </header>
+      <section>
+        <script>
+          if (!isMobile()) {
+            document.write('<h1><br/></h1>');
+          }
+        </script>
+
+      {{ content }}
+
+        <div id="outputs"></div>
+      </section>
+      <footer>
         {% if site.github.is_project_page %}
         <p class="view"><a href="{{ site.github.repository_url }}">View the Project on GitHub <small>{{ site.github.repository_nwo }}</small></a></p>
         {% endif %}
@@ -43,21 +57,6 @@
           <li><a href="{{ site.github.repository_url }}">View On <strong>GitHub</strong></a></li>
         </ul>
         {% endif %}
-
-        <div id="inputs"></div>
-      </header>
-      <section>
-        <script>
-          if (!isMobile()) {
-            document.write('<h1><br/></h1>');
-          }
-        </script>
-
-      {{ content }}
-
-        <div id="outputs"></div>
-      </section>
-      <footer>
       </footer>
     </div>
     <script src="{{ "/assets/js/scale.fix.js" | relative_url }}"></script>

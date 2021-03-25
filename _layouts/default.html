@@ -10,15 +10,20 @@
     <!--[if lt IE 9]>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/html5shiv/3.7.3/html5shiv.min.js"></script>
     <![endif]-->
-    <script src="{{ "/assets/js/customize.js" }}"></script>
+    <script src="{{ "/assets/js/views.js" }}"></script>
+    <script src="{{ "/assets/js/main.js" }}"></script>
   </head>
-  <body onload="addInputs(44)">
+  <body onload="loadIcons(44, 44)">
     <div class="wrapper">
       <header>
         <h1><a href="{{ "/" | absolute_url }}">{{ site.title | default: site.github.repository_name }}</a></h1>
         
         {% if site.logo %}
-          <img src="{{site.logo | relative_url}}" alt="Logo"/>
+        <script>
+          if (!isMobile()) {
+            document.write('<img src="{{site.logo | relative_url}}" alt="Logo"/>');
+          }
+        </script>
         {% endif %}
 
         <p>{{ site.description | default: site.github.project_tagline }}</p>
@@ -42,11 +47,15 @@
         <div id="inputs"></div>
       </header>
       <section>
-        <h1><br/></h1>
+        <script>
+          if (!isMobile()) {
+            document.write('<h1><br/></h1>');
+          }
+        </script>
 
       {{ content }}
 
-        <div id="resp"></div>
+        <div id="outputs"></div>
       </section>
       <footer>
       </footer>

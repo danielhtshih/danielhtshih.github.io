@@ -3,13 +3,13 @@
 
 @import "{{ site.theme }}";
 
-.resp-view {
+.outputs-view {
   position: relative;
   overflow: hidden;
   padding-top: 56.25%;
 }
 
-.resp-view iframe {
+.outputs-view iframe {
   position: absolute;
   top: 0;
   left: 0;
@@ -18,13 +18,13 @@
   border: 0;
 }
 
-.resp-map {
+.outputs-map {
   position: relative;
   overflow: hidden;
   padding-top: 56.25%;
 }
 
-.resp-map iframe {
+.outputs-map iframe {
   position: absolute;
   top: 0;
   left: 0;

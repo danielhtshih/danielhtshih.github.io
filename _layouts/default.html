@@ -13,7 +13,7 @@
     <script src="{{ "/assets/js/views.js" }}"></script>
     <script src="{{ "/assets/js/main.js" }}"></script>
   </head>
-  <body onload="loadIcons(44, 44)">
+  <body onload="loadIcons(views.length)">
     <div class="wrapper">
       <header>
         <h1><a href="{{ "/" | absolute_url }}">{{ site.title | default: site.github.repository_name }}</a></h1>

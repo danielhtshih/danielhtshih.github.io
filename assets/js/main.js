@@ -15,9 +15,9 @@ function querySelector(selectors, reset = false) {
   return node;
 }
 
-function createIframe(list, id) {
+function createIframe(element) {
   var iframe = document.createElement("iframe");
-  iframe.setAttribute("src", list[id]);
+  iframe.setAttribute("src", element);
   iframe.setAttribute("frameborder", "0");
   iframe.setAttribute("style", "border:0;");
   iframe.setAttribute("allowfullscreen", "");
@@ -32,19 +32,19 @@ function loadViewAndMap(id) {
   // create view node
   let view = document.createElement("div");
   view.setAttribute("class", "outputs-view");
-  view.appendChild(createIframe(views, id));
+  view.appendChild(createIframe(views[id].view));
 
   // create map node
   let map = document.createElement("div");
   map.setAttribute("class", "outputs-map");
-  map.appendChild(createIframe(maps, id));
+  map.appendChild(createIframe(views[id].map));
 
   outputs.appendChild(view);
   outputs.appendChild(document.createElement("p"));
   outputs.appendChild(map);
 }
 
-function loadIcons(total, current) {
+function loadIcons(total, current = total) {
   // desktop vs mobile
   let column = isMobile() ? 4 : 16;
 
@@ -52,7 +52,7 @@ function loadIcons(total, current) {
   let inputs = querySelector("#inputs", true);
 
   // load the latset view and map
-  loadViewAndMap(current);
+  loadViewAndMap(current-1);
 
   // append "iframe_*" as icons
   for (let pos = 0; pos < column; pos++) { 
@@ -74,8 +74,8 @@ function loadIcons(total, current) {
         input.setAttribute("onclick", "loadIcons(" + total + "," + current + ")")
       } else {
         // view icon
-        input.setAttribute("src", "/assets/img/iframe_" + current + ".jpg");
-        input.setAttribute("onclick", "loadViewAndMap(" + current + ")");
+        input.setAttribute("src", "/assets/img/" + views[(current-1)].icon);
+        input.setAttribute("onclick", "loadViewAndMap(" + (current-1) + ")");
         current--;
       }
 

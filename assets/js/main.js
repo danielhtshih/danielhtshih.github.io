@@ -37,7 +37,7 @@ function loadIcons(total, current = total) {
   let inputs = querySelector("#inputs", true);
 
   // load the latset view and map
-  loadViewAndMap(getRandom(0, current-1));
+  //loadViewAndMap(getRandom(0, current-1));
 
   // append "iframe_*" as icons
   for (let pos = 0; pos < column; pos++) { 

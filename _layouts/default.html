@@ -10,6 +10,7 @@
     <!--[if lt IE 9]>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/html5shiv/3.7.3/html5shiv.min.js"></script>
     <![endif]-->
+    <script src="{{ "/assets/js/util.js" }}"></script>
     <script src="{{ "/assets/js/logo.js" }}"></script>
     <script src="{{ "/assets/js/views.js" }}"></script>
     <script src="{{ "/assets/js/main.js" }}"></script>
@@ -24,7 +25,7 @@
         <div id="logos"></div>
         <script>
           if (!isMobile()) {
-            drawLogo();
+            loadLogo();
           }
         </script>
         {% endif %}

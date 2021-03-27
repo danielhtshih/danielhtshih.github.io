@@ -1,8 +1,4 @@
 'use strict';
-
-function getRandom (min, max) {
-  return Math.floor(Math.random() * (max - min + 1)) + min;
-};
   
 async function drawStar(context, cx, cy, spikes, outerRadius, innerRadius) {
   let rot = Math.PI / 2 * 3;

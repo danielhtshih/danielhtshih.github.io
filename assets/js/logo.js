@@ -78,6 +78,12 @@ async function drawText(context, text, diameter, size) {
 }
   
 async function drawLogo() {
+  const canvas = document.createElement('canvas');
+  canvas.id = "logo";
+  canvas.width = 270;
+  canvas.height = 270;
+  document.getElementById("logos").appendChild(canvas);
+
   let element = document.getElementById("logo");
   let context = element.getContext("2d");
   const height = element.height;

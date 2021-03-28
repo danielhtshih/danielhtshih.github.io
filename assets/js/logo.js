@@ -1,99 +1,117 @@
 'use strict';
-  
-async function drawStar(context, cx, cy, spikes, outerRadius, innerRadius) {
-  let rot = Math.PI / 2 * 3;
-  const step = Math.PI / spikes;
 
-  context.beginPath();
-  context.moveTo(cx, cy - outerRadius);
-
-  for (let spike = 0; spike < spikes; spike++) {
-    for (const radius of [outerRadius, innerRadius]) {
-      context.lineTo(cx + Math.cos(rot) * radius, cy + Math.sin(rot) * radius);
-      rot += step;
-    }
-  }
-
-  context.lineTo(cx, cy - outerRadius);
-  context.closePath();
-
-  context.lineWidth = 1;
-  context.strokeStyle = 'yellow';
-  context.stroke();
-  context.fillStyle = 'white';
-  context.fill();
-}
-  
-async function drawRadialGradientBackground(context, height, weight, diameter) {
-  const grd = context.createRadialGradient(diameter/2, diameter/2, diameter/3, diameter/2, diameter/2, diameter);
-  grd.addColorStop(0,"white");
-  grd.addColorStop(1,"lightskyblue");
-  context.fillStyle = grd;
-  context.fillRect(0, 0, height, weight);
-}
-  
-async function drawCheckeredBackground(context, height, weight, rows, cols) {
-  const cWeight = weight/cols;
-  const cHeight = height/rows;
-
-  for (let row = 0; row < rows; row++) {
-    for (let col = 0; col < cols / 2; col++) {
-        context.rect(2 * col * cWeight + (row % 2 ? 0 : cWeight), row * cHeight, cWeight, cHeight);
-    }
-  }
-  
-  context.fillStyle = 'azure';
-  context.fill();
-}
-  
-async function drawSphere(context, diameter, lines = 200, delay = 0) {
-  let nextX = diameter/2;
-  let nextY = diameter/2;
-  for (let line = 0; line < lines; line++) {
-    // random color
-    //context.strokeStyle = '#' + Math.floor(Math.random() * 16777215).toString(16).padStart(6, '0');
-    context.strokeStyle = 'skyblue';
-    context.beginPath();
-    context.moveTo(nextX, nextY);
-    let angle = getRandom(0, 360);
-    nextX = diameter/3 * Math.cos(angle) + diameter/2;
-    nextY = diameter/3 * Math.sin(angle) + diameter/2;
-    context.lineTo(nextX, nextY);
-    context.stroke();
-    context.closePath();
-    await new Promise(r => setTimeout(r, delay));
+async function loadLogo(reset = false) {
+  if (true) {
+  //if (Math.random() < 0.5) {
+    load2DLogo(reset);
+  } else {
+    load3DLogo(reset);
   }
 }
-  
-async function drawText(context, text, diameter, size) {
-  context.font = size + "px Arial";
-  context.fillStyle = 'white';
-  context.textAlign = "center"; 
-  context.fillText(text, diameter/2, diameter/2 + diameter/12);
-  context.strokeText(text, diameter/2, diameter/2 + diameter/12);
-}
-  
-async function loadLogo() {
-  let logos = querySelector("#logos", true);
-  const canvas = document.createElement('canvas');
-  canvas.id = "logo";
-  canvas.width = 270;
-  canvas.height = 270;
-  document.getElementById("logos").appendChild(canvas);
+
+async function load2DLogo(reset = false) {
+  initCanvas(reset);
 
   let element = document.getElementById("logo");
-  element.setAttribute("onclick", "loadLogo()");
+  element.setAttribute("onclick", "loadLogo(true)");
   let context = element.getContext("2d");
   const height = element.height;
   const width = element.width;
 
-  //drawRadialGradientBackground(context, height, width, width).then(v => {
-  drawCheckeredBackground(context, height, width, 7, 7).then(v => {
-  drawSphere(context, width, 240, 1).then(v => {
-    drawText(context, "", width, width/4);
-    for (let stars = 0; stars < 3; stars++) {
-        drawStar(context, getRandom(width/3, width/3*2), getRandom(width/3, width/3*2), 4, 30, 5);
+  newIcon(context, height, width, 1, 'azure', 'skyblue');
+}
+
+function load3DLogo(reset = false) {
+  initCanvas(reset);
+
+  let element = document.getElementById("logo");
+  element.setAttribute("onclick", "loadLogo(true)");
+  let ctx = element.getContext("2d");
+
+  const width = element.width; // Width of the canvas
+  const height = element.height; // Height of the canvas
+  let rotation = 0; // Rotation of the globe
+  let dots = []; // Every dots in an array
+
+  const DOTS_AMOUNT = getRandom (100, 499); // Amount of dots on the screen
+  const DOT_RADIUS = 4; // Radius of the dots
+  let GLOBE_RADIUS = width / 2; // Radius of the globe
+  let GLOBE_CENTER_Z = -GLOBE_RADIUS; // Z value of the globe center
+  let PROJECTION_CENTER_X = width / 2; // X center of the canvas HTML
+  let PROJECTION_CENTER_Y = height / 2; // Y center of the canvas HTML
+  let FIELD_OF_VIEW = width * 0.8;
+
+  class Dot {
+    constructor(x, y, z) {
+      this.x = x;
+      this.y = y;
+      this.z = z;
+      
+      this.xProject = 0;
+      this.yProject = 0;
+      this.sizeProjection = 0;
     }
-  });
-  });
+    // Do some math to project the 3D position into the 2D canvas
+    project(sin, cos) {
+      const rotX = cos * this.x + sin * (this.z - GLOBE_CENTER_Z);
+      const rotZ = -sin * this.x + cos * (this.z - GLOBE_CENTER_Z) + GLOBE_CENTER_Z;
+      this.sizeProjection = FIELD_OF_VIEW / (FIELD_OF_VIEW - rotZ);
+      this.xProject = (rotX * this.sizeProjection) + PROJECTION_CENTER_X;
+      this.yProject = (this.y * this.sizeProjection) + PROJECTION_CENTER_Y;
+    }
+    // Draw the dot on the canvas
+    draw(sin, cos) {
+      this.project(sin, cos);
+      // ctx.fillRect(this.xProject - DOT_RADIUS, this.yProject - DOT_RADIUS, DOT_RADIUS * 2 * this.sizeProjection, DOT_RADIUS * 2 * this.sizeProjection);
+      if (Math.random() < 0.9999) {
+        drawArc(ctx, this.xProject, this.yProject, DOT_RADIUS * this.sizeProjection, 0, Math.PI * 2, "skyblue");
+      } else {
+        drawStar(ctx, this.xProject, this.yProject, 4, 10, 2, 'yellow', 'white');
+      }
+    }
+  }
+
+  async function createDots(delay = 0) {
+    // Empty the array of dots
+    dots.length = 0;
+    
+    // Create a new dot based on the amount needed
+    for (let i = 0; i < DOTS_AMOUNT; i++) {
+      const theta = Math.random() * 2 * Math.PI; // Random value between [0, 2PI]
+      const phi = Math.acos((Math.random() * 2) - 1); // Random value between [-1, 1]
+      
+      // Calculate the [x, y, z] coordinates of the dot along the globe
+      const x = GLOBE_RADIUS * Math.sin(phi) * Math.cos(theta);
+      const y = GLOBE_RADIUS * Math.sin(phi) * Math.sin(theta);
+      const z = (GLOBE_RADIUS * Math.cos(phi)) + GLOBE_CENTER_Z;
+      dots.push(new Dot(x, y, z));
+      if (delay > 0) {
+        await new Promise(r => setTimeout(r, delay));
+      }
+    }
+  }
+
+  function render(a) {
+    // Clear the scene
+    ctx.clearRect(0, 0, width, height);
+    
+    // Increase the globe rotation
+    rotation = a * 0.0004;
+    
+    const sineRotation = Math.sin(rotation); // Sine of the rotation
+    const cosineRotation = Math.cos(rotation); // Cosine of the rotation
+    
+    // Loop through the dots array and draw every dot
+    for (var i = 0; i < dots.length; i++) {
+      dots[i].draw(sineRotation, cosineRotation);
+    }
+
+    window.requestAnimationFrame(render);
+  }
+
+  // Populate the dots array with random dots
+  createDots(1);
+
+  // Render the scene
+  window.requestAnimationFrame(render);
 }

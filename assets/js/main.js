@@ -29,7 +29,7 @@ function loadViewAndMap(id) {
   outputs.appendChild(map);
 }
 
-function loadIcons(total, current = total) {
+async function loadIcons(total, current = total) {
   // desktop vs mobile
   let column = isMobile() ? 4 : 16;
 
@@ -59,7 +59,23 @@ function loadIcons(total, current = total) {
         input.setAttribute("onclick", "loadIcons(" + total + "," + current + ")")
       } else {
         // view icon
-        input.setAttribute("src", "/assets/img/" + views[(current-1)].icon);
+        let icon = views[(current - 1)].icon;
+        if (icon) {
+          input.setAttribute("src", "/assets/img/" + icon);
+        } else {
+          let canvas = document.createElement('canvas');
+          canvas.width = 128;
+          canvas.height = 128;
+          let context = canvas.getContext('2d');
+          newIcon (context,
+                   canvas.height,
+                   canvas.width,
+                   0,
+                   "#" + md5(views[(current - 1)].view).slice(-6) + "44",
+                   "#" + md5(views[(current - 1)].map).slice(-6) + "cc").then(v => {
+            input.setAttribute("src", canvas.toDataURL("image/png"));
+          });
+        }
         input.setAttribute("onclick", "loadViewAndMap(" + (current-1) + ")");
         current--;
       }

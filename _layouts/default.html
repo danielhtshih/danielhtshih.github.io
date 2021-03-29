@@ -17,19 +17,18 @@
     <script src="{{ "/assets/js/main.js" }}"></script>
     <script src="https://cdn.jsdelivr.net/npm/graphql.js@0.6.6/graphql.min.js"></script>
     <script data-ad-client="ca-pub-6494509040150601" async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
+    <script>
+      var views = [];
+      var graph = graphql("https://220-135-26-160.hinet-ip.hinet.net:4000/graphql");
+      graph(`query { views { icon view map } }`
+      )({
+      }).then(function (response) {
+        views = response.views;
+      }).catch(function (error) {
+        console.log(error);
+      });
+    </script>
   </head>
-  <script>
-    var views = [];
-    var graph = graphql("https://220.135.26.160:4000/graphql");
-    graph(`query { views { icon view map } }`
-    )({
-    }).then(function (response) {
-      views = response.views;
-    }).catch(function (error) {
-      console.log(error);
-    });
-
-  </script>
   <body onload="loadViewAndMap(getRandom(0, window.views.length-1));loadIcons(window.views.length)">
     <div class="wrapper">
       <header>

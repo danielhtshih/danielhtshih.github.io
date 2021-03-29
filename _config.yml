@@ -4,8 +4,3 @@ description: A place for the stunning moments
 show_downloads: false
 google_analytics: UA-87983556-6
 theme: jekyll-theme-minimal
-plugins:
-  - jeql
-jeql:
-  github:
-    url: http://220.135.26.160:4000/graphql 

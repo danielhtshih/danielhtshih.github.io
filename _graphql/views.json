@@ -1,0 +1,3 @@
+{
+    "query": "query { views { icon view map } }"
+  }

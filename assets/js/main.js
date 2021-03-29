@@ -1,5 +1,10 @@
 'use strict';
 
+function test(views) {
+  console.log(views[0]["view"]);
+  console.log(views[0]["map"]);
+}
+
 function createIframe(element) {
   var iframe = document.createElement("iframe");
   iframe.setAttribute("src", element);
@@ -17,12 +22,12 @@ function loadViewAndMap(id) {
   // create view node
   let view = document.createElement("div");
   view.setAttribute("class", "outputs-view");
-  view.appendChild(createIframe(views[id].view));
+  view.appendChild(createIframe(window.views[id].view));
 
   // create map node
   let map = document.createElement("div");
   map.setAttribute("class", "outputs-map");
-  map.appendChild(createIframe(views[id].map));
+  map.appendChild(createIframe(window.views[id].map));
 
   outputs.appendChild(view);
   outputs.appendChild(document.createElement("p"));
@@ -59,7 +64,7 @@ async function loadIcons(total, current = total) {
         input.setAttribute("onclick", "loadIcons(" + total + "," + current + ")")
       } else {
         // view icon
-        let icon = views[(current - 1)].icon;
+        let icon = window.views[(current - 1)].icon;
         if (icon) {
           input.setAttribute("src", "/assets/img/" + icon);
         } else {
@@ -71,8 +76,8 @@ async function loadIcons(total, current = total) {
                    canvas.height,
                    canvas.width,
                    0,
-                   "#" + md5(views[(current - 1)].view).slice(-6) + "44",
-                   "#" + md5(views[(current - 1)].map).slice(-6) + "cc").then(v => {
+                   "#" + md5(window.views[(current - 1)].view).slice(-6) + "44",
+                   "#" + md5(window.views[(current - 1)].map).slice(-6) + "cc").then(v => {
             input.setAttribute("src", canvas.toDataURL("image/png"));
           });
         }

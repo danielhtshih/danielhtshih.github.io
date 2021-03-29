@@ -14,11 +14,20 @@
     <script src="{{ "/assets/js/util.js" }}"></script>
     <script src="{{ "/assets/js/icon.js" }}"></script>
     <script src="{{ "/assets/js/logo.js" }}"></script>
-    <script src="{{ "/assets/js/views.js" }}"></script>
     <script src="{{ "/assets/js/main.js" }}"></script>
     <script data-ad-client="ca-pub-6494509040150601" async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
   </head>
-  <body onload="loadViewAndMap(getRandom(0, views.length-1));loadIcons(views.length)">
+  <script> var views = []; </script>
+  {% graphql endpoint: "github", query: "views" %}
+    {% for view in data["views"] %}
+      <script>
+        window.views.push({"icon": '{{view["icon"]}}',
+                           "view": '{{view["view"]}}',
+                           "map": '{{view["map"]}}'});
+      </script>
+    {% endfor %}
+  {% endgraphql %}
+  <body onload="loadViewAndMap(getRandom(0, window.views.length-1));loadIcons(window.views.length)">
     <div class="wrapper">
       <header>
         <h1><a href="{{ "/" | absolute_url }}">{{ site.title | default: site.github.repository_name }}</a></h1>

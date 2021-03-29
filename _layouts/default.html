@@ -20,7 +20,7 @@
   </head>
   <script>
     var views = [];
-    var graph = graphql("http://220.135.26.160:4000/graphql");
+    var graph = graphql("https://220.135.26.160:4000/graphql");
     graph(`query { views { icon view map } }`
     )({
     }).then(function (response) {

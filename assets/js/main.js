@@ -1,5 +1,7 @@
 'use strict';
 
+var views = [];
+
 function test(views) {
   console.log(views[0]["view"]);
   console.log(views[0]["map"]);
@@ -15,6 +17,19 @@ function createIframe(element) {
   return iframe;
 }
 
+function loadViews() {
+  var graph = graphql("https://220-135-26-160.hinet-ip.hinet.net:4000/graphql");
+  graph(`query { views { icon view map } }`
+  )({
+  }).then(function (response) {
+    views = response.views;
+    loadViewAndMap(getRandom(0, response.views.length-1));
+    loadIcons(response.views.length)
+  }).catch(function (error) {
+    console.log(error);
+  });
+}
+
 function loadViewAndMap(id) {
   // As long as <outputs> has a child node, remove it
   let outputs = querySelector("#outputs", true);
@@ -22,12 +37,12 @@ function loadViewAndMap(id) {
   // create view node
   let view = document.createElement("div");
   view.setAttribute("class", "outputs-view");
-  view.appendChild(createIframe(window.views[id].view));
+  view.appendChild(createIframe(views[id].view));
 
   // create map node
   let map = document.createElement("div");
   map.setAttribute("class", "outputs-map");
-  map.appendChild(createIframe(window.views[id].map));
+  map.appendChild(createIframe(views[id].map));
 
   outputs.appendChild(view);
   outputs.appendChild(document.createElement("p"));
@@ -64,7 +79,7 @@ async function loadIcons(total, current = total) {
         input.setAttribute("onclick", "loadIcons(" + total + "," + current + ")")
       } else {
         // view icon
-        let icon = window.views[(current - 1)].icon;
+        let icon = views[(current - 1)].icon;
         if (icon) {
           input.setAttribute("src", "/assets/img/" + icon);
         } else {
@@ -76,8 +91,8 @@ async function loadIcons(total, current = total) {
                    canvas.height,
                    canvas.width,
                    0,
-                   "#" + md5(window.views[(current - 1)].view).slice(-6) + "44",
-                   "#" + md5(window.views[(current - 1)].map).slice(-6) + "cc").then(v => {
+                   "#" + md5(views[(current - 1)].view).slice(-6) + "44",
+                   "#" + md5(views[(current - 1)].map).slice(-6) + "cc").then(v => {
             input.setAttribute("src", canvas.toDataURL("image/png"));
           });
         }

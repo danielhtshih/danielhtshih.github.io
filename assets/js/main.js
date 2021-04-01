@@ -18,13 +18,13 @@ function createIframe(element) {
 }
 
 function loadViews() {
-  var graph = graphql("https://220-135-26-160.hinet-ip.hinet.net:4000/graphql");
-  graph(`query { views { icon view map } }`
+  var graph = graphql("https://220-135-26-160.hinet-ip.hinet.net/graphql");
+  graph(`query { views { icon view map location } }`
   )({
   }).then(function (response) {
     views = response.views;
     loadViewAndMap(getRandom(0, response.views.length-1));
-    loadIcons(response.views.length)
+    loadIcons(response.views.length);
   }).catch(function (error) {
     console.log(error);
   });
@@ -44,9 +44,22 @@ function loadViewAndMap(id) {
   map.setAttribute("class", "outputs-map");
   map.appendChild(createIframe(views[id].map));
 
+  // create article node
+  let title = document.createElement("div");
+  title.setAttribute("id", "outputs-title");
+  let article = document.createElement("div");
+  article.setAttribute("id", "outputs-article");
+
   outputs.appendChild(view);
   outputs.appendChild(document.createElement("p"));
   outputs.appendChild(map);
+  outputs.appendChild(document.createElement("p"));
+  outputs.appendChild(title);
+  outputs.appendChild(document.createElement("p"));
+  outputs.appendChild(article);
+
+  // create article
+  loadArticle(views[id].location);
 }
 
 async function loadIcons(total, current = total) {
@@ -104,4 +117,30 @@ async function loadIcons(total, current = total) {
       inputs.appendChild(document.createTextNode("\n"));
     }
   }
+}
+
+function loadArticle(title) {
+  let host = "https://en.wikipedia.org";
+  // e.g. en-us
+  //var userLang = navigator.language || navigator.userLanguage; 
+  //$(window).on("load", function() {
+  $(document).ready(function(){
+    $.ajax({
+        type: "GET",
+        url: host + "/w/api.php?action=parse&format=json&prop=text&section=0&page=" + title + "&callback=?",
+        contentType: "application/json; charset=utf-8",
+        async: false,
+        dataType: "json",
+        success: function (data, textStatus, jqXHR) {
+            $('#outputs-title').html($('<div></div>').html($('<a href="' + host + '/wiki/' + title + '"></a>').html(data.parse.title)));
+            var article = $('<div></div>').html(data.parse.text["*"]);
+            $(article).find('a').each (function () {
+              $(this).attr("href", host + $(this).attr('href'));
+            });
+            $('#outputs-article').html($(article).find('p'));
+        },
+        error: function (errorMessage) {
+        }
+    });
+  });
 }

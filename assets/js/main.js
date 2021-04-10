@@ -23,10 +23,15 @@ function loadViews() {
   )({
   }).then(function (response) {
     views = response.views;
-    loadViewAndMap(getRandom(0, response.views.length-1));
-    loadIcons(response.views.length);
+    loadViewAndMap(getRandom(0, views.length-1));
+    loadIcons(views.length);
   }).catch(function (error) {
     console.log(error);
+    /**
+    views = defaultResponse.views;
+    loadViewAndMap(getRandom(0, views.length-1));
+    loadIcons(views.length);
+    **/
   });
 }
 
@@ -94,7 +99,7 @@ async function loadIcons(total, current = total) {
         // view icon
         let icon = views[(current - 1)].icon;
         if (icon) {
-          input.setAttribute("src", "/assets/img/" + icon);
+          input.setAttribute("src", icon.split("=")[0] + "=w128-h128-k-no-pi-20-ya267-ro0-fo100");
         } else {
           let canvas = document.createElement('canvas');
           canvas.width = 128;

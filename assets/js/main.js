@@ -97,13 +97,23 @@ async function loadIcons(total, current = total) {
         input.setAttribute("onclick", "loadIcons(" + total + "," + current + ")")
       } else {
         // view icon
+        // placeholder of icon
         let icon = views[(current - 1)].icon;
+        let canvas = document.createElement('canvas');
+        canvas.width = 128;
+        canvas.height = 128;
+        let context = canvas.getContext('2d');
+        newIcon (context,
+                  canvas.height,
+                  canvas.width,
+                  0,
+                  "#" + md5(views[(current - 1)].view).slice(-6) + "44",
+                  "#" + md5(views[(current - 1)].map).slice(-6) + "cc").then(v => {
+          input.setAttribute("src", canvas.toDataURL("image/png"));
+        });
+
+        // reaplaced by actual icon
         if (icon) {
-          let canvas = document.createElement('canvas');
-          canvas.id = "icon";
-          canvas.width = 128;
-          canvas.height = 128;
-          let context = canvas.getContext('2d');
           drawRectInCircle(icon.split("=")[0],
                            context,
                            canvas.width/2,
@@ -111,21 +121,8 @@ async function loadIcons(total, current = total) {
                            canvas.width*3/4).then(v => {
             input.setAttribute("src", canvas.toDataURL("image/png"));
           });
-          //input.setAttribute("src", icon.split("=")[0] + "=w128-h128-k-no-pi-20-ya267-ro0-fo100");
-        } else {
-          let canvas = document.createElement('canvas');
-          canvas.width = 128;
-          canvas.height = 128;
-          let context = canvas.getContext('2d');
-          newIcon (context,
-                   canvas.height,
-                   canvas.width,
-                   0,
-                   "#" + md5(views[(current - 1)].view).slice(-6) + "44",
-                   "#" + md5(views[(current - 1)].map).slice(-6) + "cc").then(v => {
-            input.setAttribute("src", canvas.toDataURL("image/png"));
-          });
         }
+
         input.setAttribute("onclick", "loadViewAndMap(" + (current-1) + ")");
         current--;
       }

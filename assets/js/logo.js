@@ -18,7 +18,13 @@ async function load2DLogo(reset = false) {
   const height = element.height;
   const width = element.width;
 
-  newIcon(context, height, width, 1, 'azure', 'skyblue');
+  //newIcon(context, height, width, 1, 'azure', 'skyblue');
+  newIcon(context,
+          height,
+          width,
+          1,
+          "#" + getRandom (100000, 999999) + "44",
+          "#" + getRandom (100000, 999999) + "cc");
 }
 
 function load3DLogo(reset = false) {

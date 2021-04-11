@@ -19,7 +19,7 @@
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
     <script data-ad-client="ca-pub-6494509040150601" async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
   </head>
-  <body onload="loadViews()">
+  <body onload="loadViews('{{ site.description }}')">
     <div class="wrapper">
       <header>
         <h1><a href="{{ "/" | absolute_url }}">{{ site.title | default: site.github.repository_name }}</a></h1>
@@ -33,7 +33,7 @@
         </script>
         {% endif %}
 
-        <p>{{ site.description | default: site.github.project_tagline }}</p>
+        <p id="description"></p>
 
         <div id="inputs"></div>
       </header>

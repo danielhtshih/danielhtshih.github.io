@@ -1,6 +1,6 @@
 'use strict';
 
-var views = [];
+var views = new Array(isMobile() ? 3 : 15);
 
 function test(views) {
   console.log(views[0]["view"]);
@@ -17,7 +17,7 @@ function createIframe(element) {
   return iframe;
 }
 
-function loadViews() {
+function loadViews(description) {
   var graph = graphql("https://220-135-26-160.hinet-ip.hinet.net/graphql");
   graph(`query { views { icon view map location } }`
   )({
@@ -25,46 +25,49 @@ function loadViews() {
     views = response.views;
     loadViewAndMap(getRandom(0, views.length-1));
     loadIcons(views.length);
+    document.getElementById("description").innerHTML = views.length + " " + description;
   }).catch(function (error) {
     console.log(error);
-    /**
-    views = defaultResponse.views;
     loadViewAndMap(getRandom(0, views.length-1));
     loadIcons(views.length);
-    **/
+    document.getElementById("description").innerHTML = 0 + " " + description;
   });
 }
 
 function loadViewAndMap(id) {
   // As long as <outputs> has a child node, remove it
   let outputs = querySelector("#outputs", true);
+  let viewObj = views[id];
 
-  // create view node
-  let view = document.createElement("div");
-  view.setAttribute("class", "outputs-view");
-  view.appendChild(createIframe(views[id].view));
+  if (viewObj) {
+    // create view node
+    let view = document.createElement("div");
+    view.setAttribute("class", "outputs-view");
+    view.appendChild(createIframe(viewObj.view));
+    outputs.appendChild(view);
+    outputs.appendChild(document.createElement("p"));
 
-  // create map node
-  let map = document.createElement("div");
-  map.setAttribute("class", "outputs-map");
-  map.appendChild(createIframe(views[id].map));
+    // create map node
+    let map = document.createElement("div");
+    map.setAttribute("class", "outputs-map");
+    map.appendChild(createIframe(viewObj.map));
+    outputs.appendChild(map);
+    outputs.appendChild(document.createElement("p"));
+  }
 
   // create article node
   let title = document.createElement("div");
   title.setAttribute("id", "outputs-title");
   let article = document.createElement("div");
   article.setAttribute("id", "outputs-article");
-
-  outputs.appendChild(view);
-  outputs.appendChild(document.createElement("p"));
-  outputs.appendChild(map);
-  outputs.appendChild(document.createElement("p"));
   outputs.appendChild(title);
   outputs.appendChild(document.createElement("p"));
   outputs.appendChild(article);
 
-  // create article
-  loadArticle(views[id].location);
+  if (viewObj) {
+    // create article
+    loadArticle(viewObj.location);
+  }
 }
 
 async function loadIcons(total, current = total) {
@@ -101,17 +104,18 @@ async function loadIcons(total, current = total) {
       } else {
         // view icon
         // placeholder of icon
-        let icon = views[(current - 1)].icon;
+        let viewObj = views[(current - 1)];
+        let icon = viewObj ? viewObj.icon : null;
         let canvas = document.createElement('canvas');
         canvas.width = 128;
         canvas.height = 128;
         let context = canvas.getContext('2d');
         newIcon (context,
-                  canvas.height,
-                  canvas.width,
-                  0,
-                  "#" + md5(views[(current - 1)].view).slice(-6) + "44",
-                  "#" + md5(views[(current - 1)].map).slice(-6) + "cc").then(v => {
+                 canvas.height,
+                 canvas.width,
+                 0,
+                 "#" + md5(viewObj ? viewObj.view : getRandom (100000, 999999)).slice(-6) + "44",
+                 "#" + md5(viewObj ? viewObj.map : getRandom (100000, 999999)).slice(-6) + "cc").then(v => {
           input.setAttribute("src", canvas.toDataURL("image/png"));
         });
 

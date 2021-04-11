@@ -99,7 +99,19 @@ async function loadIcons(total, current = total) {
         // view icon
         let icon = views[(current - 1)].icon;
         if (icon) {
-          input.setAttribute("src", icon.split("=")[0] + "=w128-h128-k-no-pi-20-ya267-ro0-fo100");
+          let canvas = document.createElement('canvas');
+          canvas.id = "icon";
+          canvas.width = 128;
+          canvas.height = 128;
+          let context = canvas.getContext('2d');
+          drawRectInCircle(icon.split("=")[0],
+                           context,
+                           canvas.width/2,
+                           canvas.height/2,
+                           canvas.width*3/4).then(v => {
+            input.setAttribute("src", canvas.toDataURL("image/png"));
+          });
+          //input.setAttribute("src", icon.split("=")[0] + "=w128-h128-k-no-pi-20-ya267-ro0-fo100");
         } else {
           let canvas = document.createElement('canvas');
           canvas.width = 128;

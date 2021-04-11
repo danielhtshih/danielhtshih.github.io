@@ -106,3 +106,51 @@ async function newIcon (context, height, width, delay = 0, backgroundStyle = 'az
     });
   });
 }
+
+async function loadImage(url) {
+  return new Promise (function (resolve, reject) {
+      var img = new Image();
+      img.setAttribute('crossorigin', 'anonymous'); 
+      img.src = url;
+      img.onload = function() {
+        var dImage = document.createElement("canvas"); // create a drawable image
+        dImage.width = img.naturalWidth;      // set the resolution
+        dImage.height = img.naturalHeight;
+        dImage.ctx = dImage.getContext("2d");   // get drawing API
+                                                // and add to image
+                                                // for possible later use
+        dImage.ctx.scale(1, -1);
+        dImage.ctx.drawImage(img, 0, 0, dImage.width, -dImage.height);
+        img.replaceWith(dImage);
+        resolve(dImage);
+      };
+      img.onerror = function() {
+          reject("load error");
+      };
+  });
+}
+
+// draw the img inside the circle of center (cx,cy) between radius 
+async function drawRectInCircle(img, ctx, cx, cy, radius) {
+  await loadImage(img).then(function(img) {
+
+    //ctx.drawImage(img, 0, 0);
+
+    let step = 1 * Math.atan2(1, radius);
+    let limit = 2 * Math.PI;
+
+    ctx.save();
+    ctx.translate(cx, cy);
+    for (let angle = 0; angle < limit; angle += step) {
+        ctx.save();
+        ctx.rotate(angle);
+        ctx.translate(0, 0);
+        ctx.rotate(Math.PI / 2);
+        let ratio = angle / limit;
+        let x = ratio * img.width;
+        ctx.drawImage(img, x, 0, 1, img.height, 0, 0, 1, radius);
+        ctx.restore();
+    }
+    ctx.restore();
+  });
+}

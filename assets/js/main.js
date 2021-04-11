@@ -84,6 +84,9 @@ async function loadIcons(total, current = total) {
       input.setAttribute("type", "image");
       input.setAttribute("class", "icon");
       input.setAttribute("alt", "");
+      input.width = 128;
+      inputs.appendChild(input);
+      inputs.appendChild(document.createTextNode("\n"));
 
       if (pos == 0 && total != current) {
         // previous page icon
@@ -126,9 +129,6 @@ async function loadIcons(total, current = total) {
         input.setAttribute("onclick", "loadViewAndMap(" + (current-1) + ")");
         current--;
       }
-
-      inputs.appendChild(input);
-      inputs.appendChild(document.createTextNode("\n"));
     }
   }
 }

@@ -92,15 +92,27 @@ async function loadIcons(total, current = total) {
       inputs.appendChild(document.createTextNode("\n"));
 
       if (pos == 0 && total != current) {
+        let canvas = document.createElement('canvas');
+        canvas.width = 128;
+        canvas.height = 128;
+        let context = canvas.getContext('2d');
         // previous page icon
-        input.setAttribute("src", "/assets/img/left_arrow.jpg");
-        // cehck if the previous page is the first page
-        let prev = (current + column - 1) == total ? total : (current + column - 2);
-        input.setAttribute("onclick", "loadIcons(" + total + "," + prev + ")")
+        await drawLeftArrow(context, canvas.width*5/16, canvas.height/2).then(v => {
+          input.setAttribute("src", canvas.toDataURL("image/png"));
+          // cehck if the previous page is the first page
+          let prev = (current + column - 1) == total ? total : (current + column - 2);
+          input.setAttribute("onclick", "loadIcons(" + total + "," + prev + ")");
+        });
       } else if (pos == (column - 1)) {
-        // next page icon
-        input.setAttribute("src", "/assets/img/right_arrow.jpg");
-        input.setAttribute("onclick", "loadIcons(" + total + "," + current + ")")
+        let canvas = document.createElement('canvas');
+        canvas.width = 128;
+        canvas.height = 128;
+        let context = canvas.getContext('2d');
+        // new page icon
+        await drawRightArrow(context, canvas.width*5/8, canvas.height/2).then(v => {
+          input.setAttribute("src", canvas.toDataURL("image/png"));
+          input.setAttribute("onclick", "loadIcons(" + total + "," + current + ")")
+        });
       } else {
         // view icon
         // placeholder of icon
@@ -110,7 +122,7 @@ async function loadIcons(total, current = total) {
         canvas.width = 128;
         canvas.height = 128;
         let context = canvas.getContext('2d');
-        newIcon (context,
+        await newIcon (context,
                  canvas.height,
                  canvas.width,
                  0,
@@ -119,7 +131,7 @@ async function loadIcons(total, current = total) {
           input.setAttribute("src", canvas.toDataURL("image/png"));
         });
 
-        // reaplaced by actual icon
+        // reaplaced by actual icon; no await
         if (icon) {
           drawRectInCircle(icon.split("=")[0],
                            context,

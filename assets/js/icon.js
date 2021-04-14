@@ -83,6 +83,36 @@ async function drawArc(context, cx, cy, radius, startAngle, endAngle, fillStyle)
   context.fill();
 }
 
+async function drawArrowhead (context, x, y, arrowHeight, arrowWidth, radians) {
+  context.save();
+  context.beginPath();
+  context.translate(x, y);
+  context.rotate(radians);
+  context.moveTo(0, 0);
+  context.lineTo(arrowHeight, arrowHeight);
+  context.lineTo(arrowHeight, arrowHeight+arrowWidth);
+  context.lineTo(0, arrowWidth);
+  context.lineTo(-arrowHeight, arrowHeight+arrowWidth);
+  context.lineTo(-arrowHeight, arrowHeight);
+  context.closePath();
+  context.restore();
+  context.fill();
+}
+
+async function drawLeftArrow(context, x, y, strokeStyle = "black", fillStyle = "black", lineWidth = 1) {
+  context.strokeStyle = strokeStyle;
+  context.fillStyle = fillStyle;
+  context.lineWidth = lineWidth;
+  await drawArrowhead(context, x, y, 40, 15, -90 * Math.PI/180);
+}
+
+async function drawRightArrow(context, x, y, strokeStyle = "black", fillStyle = "black", lineWidth = 1) {
+  context.strokeStyle = strokeStyle;
+  context.fillStyle = fillStyle;
+  context.lineWidth = lineWidth;
+  await drawArrowhead(context, x, y, 40, 15, 90 * Math.PI/180);
+}
+
 async function initCanvas(reset = false) {
   let logos = querySelector("#logos", reset);
   if (!logos.hasChildNodes()) {

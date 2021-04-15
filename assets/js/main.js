@@ -25,12 +25,12 @@ function loadViews(description) {
     views = response.views;
     loadViewAndMap(getRandom(0, views.length-1));
     loadIcons(views.length);
-    document.getElementById("description").innerHTML = views.length + " " + description;
+    //document.getElementById("description").innerHTML = views.length + " " + description;
   }).catch(function (error) {
     console.log(error);
     loadViewAndMap(getRandom(0, views.length-1));
     loadIcons(views.length);
-    document.getElementById("description").innerHTML = 0 + " " + description;
+    //document.getElementById("description").innerHTML = 0 + " " + description;
   });
 }
 

@@ -17,7 +17,7 @@ function createIframe(element) {
   return iframe;
 }
 
-function loadViews(description) {
+function loadViews() {
   var graph = graphql("https://220-135-26-160.hinet-ip.hinet.net/graphql");
   graph(`query { views { icon view map location } }`
   )({
@@ -25,12 +25,12 @@ function loadViews(description) {
     views = response.views;
     loadViewAndMap(getRandom(0, views.length-1));
     loadIcons(views.length);
-    //document.getElementById("description").innerHTML = views.length + " " + description;
+    document.getElementById("title").innerHTML += " " + views.length;
   }).catch(function (error) {
     console.log(error);
     loadViewAndMap(getRandom(0, views.length-1));
     loadIcons(views.length);
-    //document.getElementById("description").innerHTML = 0 + " " + description;
+    document.getElementById("title").innerHTML += " " + 0;
   });
 }
 

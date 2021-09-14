@@ -18,7 +18,7 @@ function createIframe(element) {
 }
 
 function loadViews() {
-  var graph = graphql("https://220-135-26-160.hinet-ip.hinet.net/graphql");
+  var graph = graphql("https://125-228-53-83.hinet-ip.hinet.net/graphql");
   graph(`query { views { icon view map location } }`
   )({
   }).then(function (response) {
